@@ -2,6 +2,8 @@ import time
 import random
 import matplotlib.pyplot as plt
 from typing import List
+
+from InsertionSort import insertion_sort
 from MergeSort import merge_sort
 from QuickSort import quick_sort
 import tkinter as tk
@@ -59,7 +61,7 @@ def ask_file():
 
     if file_name:
         try:
-            with open(file_name, 'r') as file:
+            with open(file_name, 'r', encoding='utf-8') as file:
                 content = file.read()
         except Exception as e:
             print(f"Ocurrió un error al abrir el archivo: {e}")
@@ -70,7 +72,7 @@ def ask_file():
 
 
 # Función para medir el tiempo de ejecución de cada algoritmo en función del tamaño del array
-def measure_sort_times(sizes: List[int]):
+def measure_recursive_sort_times(sizes: List[int]):
     merge_times = []
     quick_times = []
 
@@ -95,20 +97,65 @@ def measure_sort_times(sizes: List[int]):
 
     return merge_times, quick_times
 
+def measure_iterative_sort_times(sizes: List[int]):
+    insertion_times = []
 
-# Definir tamaños de arrays para la prueba hasta 500,000
-sizes = [1, 100, 1000, 5000, 10000, 25000, 50000, 100000, 175000, 250000, 325000, 500000]
-merge_times, quick_times = measure_sort_times(sizes)
+    content = ask_file()
 
-# Graficar los resultados mejorados
-# Graficar los resultados mejorados con una escala logarítmica
-plt.figure(figsize=(10, 6))
-plt.plot(sizes[:len(merge_times)], merge_times, label='Merge Sort', marker='o')
-plt.plot(sizes[:len(quick_times)], quick_times, label='Quick Sort', marker='o')
-plt.xlabel("Size of Array (n)")
-plt.ylabel("Execution Time (seconds)")
-plt.title("Execution Time vs. Array Size for Merge Sort and Quick Sort (Up to 500,000 Elements)")
-plt.xscale('log')  # Establece la escala del eje x a logarítmica
-plt.legend()
-plt.grid(True)
-plt.show()
+    for size in sizes:
+        try:
+            dictionary_tasks_parameters_list = extract_data(size, content)
+        except ValueError as e:
+            print(e)
+            break
+
+        start_time = time.time()
+        insertion_sort(dictionary_tasks_parameters_list, "name")
+        insertion_times.append(time.time() - start_time)
+
+
+    return insertion_times
+
+def recursive_algorithm_graph():
+    sizes = [1, 100, 1000, 5000, 10000, 25000, 50000, 100000, 175000, 250000, 325000, 500000]
+    merge_times, quick_times = measure_recursive_sort_times(sizes)
+
+    # Graficar los resultados mejorados
+    # Graficar los resultados mejorados con una escala logarítmica
+    plt.figure(figsize=(10, 6))
+    plt.plot(sizes[:len(merge_times)], merge_times, label='Merge Sort', marker='o')
+    plt.plot(sizes[:len(quick_times)], quick_times, label='Quick Sort', marker='o')
+    plt.xlabel("Size of Array (n)")
+    plt.ylabel("Execution Time (seconds)")
+    plt.title("Execution Time vs. Array Size for Merge Sort and Quick Sort (Up to 500,000 Elements)")
+    plt.xscale('log')  # Establece la escala del eje x a logarítmica
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+
+def iterative_algorithm_graph():
+    # Tamaños de entrada
+    sizes = [1, 100, 1000, 10000, 25000, 50000, 100000]
+    #sizes = [1, 100, 1000, 5000, 10000, 25000, 50000, 100000, 175000, 250000, 325000, 500000]
+
+    insertion_times = measure_iterative_sort_times(sizes)
+
+    # Graficar los resultados
+    plt.figure(figsize=(10, 6))
+    plt.plot(sizes, insertion_times, label='Insertion Sort', marker='o', linestyle='-', color='blue')
+
+    # Etiquetas y títulos
+    plt.xlabel("Size of Array (n)", fontsize=12)
+    plt.ylabel("Execution Time (seconds)", fontsize=12)
+    plt.title("Execution Time vs. Array Size for Insertion Sort", fontsize=14)
+    plt.xscale('log')  # Escala logarítmica para el eje X
+    plt.legend(fontsize=12)
+    plt.grid(True)
+    plt.tight_layout()
+
+    # Mostrar el gráfico
+    plt.show()
+
+
+iterative_algorithm_graph()
