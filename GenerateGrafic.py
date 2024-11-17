@@ -8,6 +8,8 @@ from MergeSort import merge_sort
 from QuickSort import quick_sort
 import tkinter as tk
 from tkinter import filedialog
+
+from SelectionSort import selection_sort
 from weightCalculation import calculate_weight_of_task
 
 
@@ -99,6 +101,7 @@ def measure_recursive_sort_times(sizes: List[int]):
 
 def measure_iterative_sort_times(sizes: List[int]):
     insertion_times = []
+    selection_times = []
 
     content = ask_file()
 
@@ -113,14 +116,16 @@ def measure_iterative_sort_times(sizes: List[int]):
         insertion_sort(dictionary_tasks_parameters_list, "name")
         insertion_times.append(time.time() - start_time)
 
+        start_time = time.time()
+        selection_sort(dictionary_tasks_parameters_list, "name")
+        selection_times.append(time.time() - start_time)
 
-    return insertion_times
+    return insertion_times, selection_times
 
 def recursive_algorithm_graph():
     sizes = [1, 100, 1000, 5000, 10000, 25000, 50000, 100000, 175000, 250000, 325000, 500000]
     merge_times, quick_times = measure_recursive_sort_times(sizes)
 
-    # Graficar los resultados mejorados
     # Graficar los resultados mejorados con una escala logarítmica
     plt.figure(figsize=(10, 6))
     plt.plot(sizes[:len(merge_times)], merge_times, label='Merge Sort', marker='o')
@@ -135,20 +140,19 @@ def recursive_algorithm_graph():
 
 
 def iterative_algorithm_graph():
-    # Tamaños de entrada
-    sizes = [1, 100, 1000, 10000, 25000, 50000, 100000]
-    #sizes = [1, 100, 1000, 5000, 10000, 25000, 50000, 100000, 175000, 250000, 325000, 500000]
+    sizes = [1, 100, 1000, 20000]
 
-    insertion_times = measure_iterative_sort_times(sizes)
+    insertion_times, selection_times = measure_iterative_sort_times(sizes)
 
     # Graficar los resultados
     plt.figure(figsize=(10, 6))
-    plt.plot(sizes, insertion_times, label='Insertion Sort', marker='o', linestyle='-', color='blue')
+    plt.plot(sizes[:len(insertion_times)], insertion_times, label='Insertion Sort', marker='o')
+    plt.plot(sizes[:len(selection_times)], selection_times, label='Selection Sort', marker='o')
 
     # Etiquetas y títulos
     plt.xlabel("Size of Array (n)", fontsize=12)
     plt.ylabel("Execution Time (seconds)", fontsize=12)
-    plt.title("Execution Time vs. Array Size for Insertion Sort", fontsize=14)
+    plt.title("Execution Time vs. Array Size for Insertion Sort and Selection Sort", fontsize=14)
     plt.xscale('log')  # Escala logarítmica para el eje X
     plt.legend(fontsize=12)
     plt.grid(True)
