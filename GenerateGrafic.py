@@ -140,7 +140,7 @@ def recursive_algorithm_graph():
 
 
 def iterative_algorithm_graph():
-    sizes = [1, 100, 1000, 20000]
+    sizes = [1, 100, 1000, 10000]
 
     insertion_times, selection_times = measure_iterative_sort_times(sizes)
 

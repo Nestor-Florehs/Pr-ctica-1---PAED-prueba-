@@ -1,34 +1,37 @@
-def is_sorted(arr, clave):
-    """Verifica si la lista ya está ordenada según la clave."""
-    return all(arr[i][clave].lower() <= arr[i + 1][clave].lower() for i in range(len(arr) - 1))
+"""def insertion_sort(arr, key='name'):
+    n = len(arr)
+    for i in range(1, n):
+        j = i
+        while j > 0 and arr[j][key].lower() < arr[j-1][key].lower():
+            arr[j], arr[j-1] = arr[j-1], arr[j]
+            j -= 1"""
 
-def binary_search(arr, key_item, clave, low, high):
-    """Encuentra la posición de inserción usando búsqueda binaria."""
-    key_value_lower = key_item[clave].lower()
-    while low <= high:
-        mid = (low + high) // 2
-        if arr[mid][clave].lower() > key_value_lower:
-            high = mid - 1
-        else:
-            low = mid + 1
-    return low
-
-def insertion_sort(arr, clave):
-    """Insertion Sort optimizado con detección previa de orden."""
-    if is_sorted(arr, clave):
+def insertion_sort(arr, key='name', reverse=False):
+    if not arr:
         return
+    
+    if not all(isinstance(item, dict) and key in item for item in arr):
+        raise KeyError(f"Todas las entradas deben ser diccionarios con la clave '{key}'")
 
-    for i in range(1, len(arr)):
-        key_item = arr[i]
-
-        # Encuentra la posición con búsqueda binaria
-        pos = binary_search(arr, key_item, clave, 0, i - 1)
-
-        # Mueve los elementos en bloque para hacer espacio
-        arr[pos + 1 : i + 1] = arr[pos:i]
-
-        # Inserta el elemento en la posición correcta
-        arr[pos] = key_item
+    n = len(arr)
+    for i in range(1, n):
+        current = arr[i]
+        current_value = current[key].lower()
+        j = i - 1
+        
+        # Comparación directa sin función
+        while j >= 0:
+            comparison_value = arr[j][key].lower()
+            if reverse:
+                if current_value <= comparison_value:
+                    break
+            else:
+                if current_value >= comparison_value:
+                    break
+            arr[j + 1] = arr[j]
+            j -= 1
+        
+        arr[j + 1] = current
 
 # Prueba del algoritmo
 def test_insertion_sort():
@@ -56,4 +59,4 @@ def test_insertion_sort():
     for task in tasks:
         print(task)
 
-# test_insertion_sort()
+test_insertion_sort()

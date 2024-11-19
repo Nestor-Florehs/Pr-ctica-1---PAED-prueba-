@@ -78,4 +78,4 @@ def order_with_selection_sort():
     print("\tTiempo de ejecución de mergeSort:", elapsed_time_seconds, "segundos")
     print("\tTiempo de ejecución de mergeSort:", elapsed_time_minutes, "minutos")
 
-order_with_selection_sort()
+order_with_insertion_sort()
