@@ -1,37 +1,13 @@
-"""def insertion_sort(arr, key='name'):
+# Función para ordenar una lista de diccionarios utilizando el algoritmo de Insertion Sort.
+# El parámetro key es el que se utilizará para ordenar la lista.
+# Se considera que siempre se introducirá un diccionario y que la clave siempre existirá y sera un string.
+def insertion_sort(arr, key='name'):
     n = len(arr)
     for i in range(1, n):
         j = i
         while j > 0 and arr[j][key].lower() < arr[j-1][key].lower():
             arr[j], arr[j-1] = arr[j-1], arr[j]
-            j -= 1"""
-
-def insertion_sort(arr, key='name', reverse=False):
-    if not arr:
-        return
-    
-    if not all(isinstance(item, dict) and key in item for item in arr):
-        raise KeyError(f"Todas las entradas deben ser diccionarios con la clave '{key}'")
-
-    n = len(arr)
-    for i in range(1, n):
-        current = arr[i]
-        current_value = current[key].lower()
-        j = i - 1
-        
-        # Comparación directa sin función
-        while j >= 0:
-            comparison_value = arr[j][key].lower()
-            if reverse:
-                if current_value <= comparison_value:
-                    break
-            else:
-                if current_value >= comparison_value:
-                    break
-            arr[j + 1] = arr[j]
             j -= 1
-        
-        arr[j + 1] = current
 
 # Prueba del algoritmo
 def test_insertion_sort():
@@ -59,4 +35,4 @@ def test_insertion_sort():
     for task in tasks:
         print(task)
 
-test_insertion_sort()
+# test_insertion_sort()

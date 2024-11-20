@@ -1,3 +1,5 @@
+# Función para ordenar una lista de diccionarios utilizando el algoritmo de Selection Sort.
+# Presupone que le llegará una lista de diccionarios y que la clave siempre existirá y el valor de la clave sera un string.
 def selection_sort(arr, key='name'):
     n = len(arr)
     for i in range(n-1):
@@ -7,7 +9,6 @@ def selection_sort(arr, key='name'):
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
 
-# Función de prueba para ordenar una lista de diccionarios por el nombre
 def test_selection_sort():
     arr = [
         {'name': 'Carlos', 'weight': 70},
@@ -21,6 +22,5 @@ def test_selection_sort():
     for item in arr:
         print(item)
 
-# Ejecutar el test
-test_selection_sort()
+# test_selection_sort()
 
